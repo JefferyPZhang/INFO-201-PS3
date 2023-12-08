@@ -1,0 +1,174 @@
+---
+title: "Problem Set 3"
+author: "Kai T, Gavin M, Jeffery Z, Xander B"
+date: "2023-10-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(magick)
+library(pdftools)
+library(rmarkdown)
+library(knitr)
+```
+
+## 1 Working with files
+### 1.1 Find files in folder
+#### 1.
+```{r question1.1.1}
+  getwd()
+```
+
+#### 2.
+
+C:/Users/ktind/OneDrive/INFO 201/Problem Set 3/PS3.Rmd
+
+#### 3.
+
+../Problem Set 3 Materials
+
+#### 4.
+
+![folder screenshot](C:\Users\ktind\OneDrive\Pictures\Screenshots\PS3 Materials Screenshot.jpg)
+
+#### 5.
+```{r question1.1.5}
+  files <- list.files("../Problem Set 3 Materials")
+  files
+```
+
+#### 6.
+
+Yes
+
+#### 7.
+
+No, it does not show the type of file. It only shows DOC 1 as opposed to DOC 1.docx.
+
+### 1.2 Work with the files
+#### 1.
+
+```{r}
+  for (i in 1:length(files)) {
+    file_name <- files[i]
+    file_type <- substr(file_name, nchar(file_name) - 3, nchar(file_name))
+    pathed_name <- paste("../Problem Set 3 Materials/", file_name, sep="")
+    
+    if (file_type == '.jpg') {
+      pic <- image_read(pathed_name)
+      cat(file_name, "\n")
+      plot(pic)
+    } else if (file_type == '.pdf') {
+      page2 <- image_read_pdf(pathed_name, pages = 2)
+      plot(page2)
+      cat(file_name, "\n")
+    } else {
+      cat(file_name, "cannot be displayed \n")
+    }
+  }
+```
+
+## 2 Control structures
+#### 1.
+```{r}
+  sentences <- ifelse (
+    substr(files, nchar(files) - 3, nchar(files)) == ".jpg",
+    paste(files, "is an image file \n"),
+    ifelse (
+      substr(files, nchar(files) - 3, nchar(files)) == ".pdf",
+      paste(files, "is a pdf file \n"),
+      paste(files, "is something else \n")
+      )
+    )
+  cat(sentences, "\n")
+```
+
+#### 2.
+```{r}
+  num_png <- 0
+
+  for (i in 1:length(files)) {
+    file_name <- files[i]
+    file_type <- substr(file_name, nchar(file_name) - 3, nchar(file_name))
+    if (file_type == '.png') {
+      num_png <- num_png + 1
+    } 
+  }
+
+  if (num_png == 0) {
+    cat("There are no png files \n")
+  } else if (num_png == 1) {
+    cat("There is a single png file \n")
+  } else {
+    cat("There is", num_png, "files \n")
+  }
+```
+## 3 Markdown and RMarkdown
+### 3.1 Markdown
+#### 3. 
+* Blue
+* Orange
+* Green
+
+#### 4.
+1. Khartoum, Sudan
+2. Osaka, Japan
+3. Charlotte, Maine, United States
+
+#### 5. 
+```
+print("Hello World")
+a <- 1
+b <- 2
+a + b
+```
+
+#### 6.
+**_This is a sentence which is both bold and italic, how wacky._**
+
+#### 7.
+![](cat-keyboard.jpg)
+
+### 3.2
+
+#### 1. 
+```{r}
+files <- list.files("../Problem Set 3 Materials")
+num_imgs <- 0
+num_pdfs <- 0
+num_other <- 0
+for (i in 1:length(files)) {
+    file_name <- files[i]
+    file_type <- substr(file_name, nchar(file_name) - 3, nchar(file_name))
+    if (file_type == '.png' || file_type == '.jpg') {
+      num_imgs <- num_imgs + 1
+    } else if (file_type == '.pdf') {
+      num_pdfs <- num_pdfs + 1
+    } else {
+      num_other <- num_other + 1
+    }
+}
+```
+
+#### 2.
+There are **`r length(files)`** files in the `r getwd()` folder, **`r num_imgs`** images, **`r num_pdfs`** pdfs, and **`r num_other`** other files.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
